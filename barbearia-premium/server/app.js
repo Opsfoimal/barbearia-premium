@@ -2,13 +2,16 @@ import express from 'express';
 import helmet from 'helmet';
 import {rateLimit} from 'express-rate-limit';
 import {DatabaseSync} from 'node:sqlite';
-import {randomBytes,scryptSync,timingSafeEqual} from 'node:crypto';
+import {randomBytes,scryptSync,scrypt,createHash,timingSafeEqual} from 'node:crypto';
+import {promisify} from 'node:util';
 import {mkdirSync,existsSync} from 'node:fs';
 import path from 'node:path';
 import {z} from 'zod';
 import {initialServices} from '../src/lib/services.js';
 
 const statuses=['pendente','confirmado','cancelado','concluido'];
+const derivePassword=promisify(scrypt);
+const sessionHash=token=>createHash('sha256').update(token).digest('hex');
 const id=z.coerce.number().int().positive();
 const date=z.string().regex(/^\d{4}-\d{2}-\d{2}$/).refine(v=>!isNaN(Date.parse(v))&&new Date(v).toISOString().slice(0,10)===v);
 const time=z.string().regex(/^(0\d|1\d|2[0-3]):[0-5]\d$/);
@@ -37,16 +40,23 @@ export function createApp({databasePath=process.env.DATABASE_PATH||'./data/barbe
  if(!one('SELECT id FROM admins LIMIT 1')){if(!adminEmail||!adminPassword||adminPassword.length<12){db.close();throw new Error('Configure ADMIN_EMAIL e ADMIN_PASSWORD (mínimo 12 caracteres) no .env antes de iniciar.');}z.email().parse(adminEmail);const salt=randomBytes(16).toString('hex');run('INSERT INTO admins(email,salt,hash) VALUES(?,?,?)',adminEmail,salt,scryptSync(adminPassword,salt,64).toString('hex'));}
  if(!all('PRAGMA table_info(appointments)').some(c=>c.name==='customer_id')) db.exec('ALTER TABLE appointments ADD COLUMN customer_id INTEGER REFERENCES customers(id)');
  db.exec("INSERT OR IGNORE INTO customers(name,phone,email) SELECT name,phone,COALESCE(email,'') FROM appointments ORDER BY id; UPDATE appointments SET customer_id=(SELECT id FROM customers WHERE phone=appointments.phone) WHERE customer_id IS NULL;");
- for(const [key,value] of Object.entries({name:process.env.SHOP_NAME||"DQB STUDIO",whatsapp:process.env.SHOP_WHATSAPP||'5511999999999',address:process.env.SHOP_ADDRESS||'Rua Dr. Luiz Losso Filho, 703, Curitiba - PR',hours:'Segunda a sábado, 09h às 19h'}))run('INSERT OR IGNORE INTO settings(key,value) VALUES(?,?)',key,value);
+ for(const [key,value] of Object.entries({name:process.env.SHOP_NAME||"DQB STUDIO",whatsapp:process.env.SHOP_WHATSAPP||'5511999999999',address:process.env.SHOP_ADDRESS||'Rua Dr. Luiz Losso Filho, 716, Curitiba - PR',hours:'Segunda a sábado, 09h às 19h'}))run('INSERT OR IGNORE INTO settings(key,value) VALUES(?,?)',key,value);
  const shop=()=>({...Object.fromEntries(all('SELECT key,value FROM settings').map(s=>[s.key,s.value])),today:today()});
  if(!one('SELECT id FROM services LIMIT 1')){for(const s of initialServices)run('INSERT INTO services(name,description,price,duration) VALUES(?,?,?,?)',s.name,s.description,s.price,s.duration);for(const b of [['Rafael Costa','Cortes clássicos e acabamento'],['Lucas Almeida','Degradê e barba']])run('INSERT INTO barbers(name,specialty,photo,rating) VALUES(?,?,?,?)',...b,'',4.9);}
  const app=express();app.disable('x-powered-by');app.use(helmet({contentSecurityPolicy:{directives:{'img-src':["'self'",'https:','data:'],'frame-src':['https://maps.google.com','https://www.google.com']}}}));app.use(express.json({limit:'20kb'}));
- app.use('/api',rateLimit({windowMs:60000,limit:180,standardHeaders:true,legacyHeaders:false}));
+ app.use('/api',(_req,res,next)=>{res.setHeader('Cache-Control','no-store');next();});
+ app.use('/api',rateLimit({windowMs:60000,limit:180,standardHeaders:true,legacyHeaders:false,message:{error:'Muitas tentativas. Aguarde um minuto.'}}));
  const allowedOrigins=req=>[`${req.protocol}://${req.headers.host}`,...(process.env.NODE_ENV!=='production'?['http://localhost:5173','http://127.0.0.1:5173']:[])];
- app.use('/api',(req,res,next)=>{if(['POST','PUT','DELETE','PATCH'].includes(req.method)&&req.headers.origin&&!allowedOrigins(req).includes(req.headers.origin))return res.status(403).json({error:'Origem não permitida.'});next();});
- const auth=(req,res,next)=>{const token=(req.headers.cookie||'').split(';').map(s=>s.trim()).find(s=>s.startsWith('session='))?.slice(8);if(!token||!one('SELECT token FROM sessions WHERE token=? AND expires>?',token,Date.now()))return res.status(401).json({error:'Entre no painel para continuar.'});req.token=token;next();};
+ app.use('/api',(req,res,next)=>{
+  if(['POST','PUT','DELETE','PATCH'].includes(req.method)){
+   if(req.get('X-Requested-With')!=='DQBStudio'||req.get('Sec-Fetch-Site')==='cross-site'||req.headers.origin&&!allowedOrigins(req).includes(req.headers.origin))return res.status(403).json({error:'Origem não permitida.'});
+   if(['POST','PUT','PATCH'].includes(req.method)&&req.path!=='/logout'&&!req.is('application/json'))return res.status(415).json({error:'Envie os dados em formato JSON.'});
+  }
+  next();
+ });
+ const auth=(req,res,next)=>{const token=(req.headers.cookie||'').split(';').map(s=>s.trim()).find(s=>s.startsWith('session='))?.slice(8);if(!token||!/^[a-f0-9]{64}$/.test(token)||!one('SELECT token FROM sessions WHERE token=? AND expires>?',sessionHash(token),Date.now()))return res.status(401).json({error:'Entre no painel para continuar.'});req.token=sessionHash(token);next();};
  const cookie=(token,age)=>`session=${token}; HttpOnly; SameSite=Strict; Path=/; Max-Age=${age}${process.env.NODE_ENV==='production'?'; Secure':''}`;
- app.post('/api/login',rateLimit({windowMs:15*60000,limit:10}), (req,res)=>{const {email,password}=z.object({email:z.email(),password:z.string().max(200)}).parse(req.body);const admin=one('SELECT * FROM admins WHERE email=?',email);const hash=scryptSync(password,admin?.salt||'invalid',64);if(!admin||!timingSafeEqual(hash,Buffer.from(admin.hash,'hex')))fail('E-mail ou senha incorretos.',401);const token=randomBytes(32).toString('hex');run('DELETE FROM sessions WHERE expires<?',Date.now());run('INSERT INTO sessions VALUES(?,?)',token,Date.now()+8*3600000);res.setHeader('Set-Cookie',cookie(token,28800));res.json({ok:true});});
+ app.post('/api/login',rateLimit({windowMs:15*60000,limit:10,standardHeaders:true,legacyHeaders:false,message:{error:'Muitas tentativas de login. Aguarde 15 minutos.'}}), async(req,res)=>{const {email,password}=z.object({email:z.email(),password:z.string().min(1).max(200)}).parse(req.body);const admin=one('SELECT * FROM admins WHERE email=?',email);const hash=await derivePassword(password,admin?.salt||'invalid',64);if(!admin||!timingSafeEqual(hash,Buffer.from(admin.hash,'hex')))fail('E-mail ou senha incorretos.',401);const token=randomBytes(32).toString('hex');run('DELETE FROM sessions WHERE expires<?',Date.now());run('INSERT INTO sessions VALUES(?,?)',sessionHash(token),Date.now()+8*3600000);res.setHeader('Set-Cookie',cookie(token,28800));res.json({ok:true});});
  app.post('/api/logout',auth,(req,res)=>{run('DELETE FROM sessions WHERE token=?',req.token);res.setHeader('Set-Cookie',cookie('',0));res.json({ok:true});});
  app.get('/api/catalog',(_req,res)=>res.json({services:all('SELECT * FROM services WHERE active=1'),barbers:all('SELECT * FROM barbers WHERE active=1'),shop:shop()}));
  function available(barberId,day,start,duration,exclude=0){const end=start+duration;if(day<today()||new Date(`${day}T12:00:00Z`).getUTCDay()===0||start<540||end>1140||start%15!==0)return false;if(new Date(`${day}T${clock(start)}:00-03:00`).getTime()<=Date.now())return false;return !one("SELECT id FROM appointments WHERE barber_id=? AND date=? AND status!='cancelado' AND id!=? AND start<? AND end>?",barberId,day,exclude,end,start)&&!one('SELECT id FROM blocks WHERE (barber_id=? OR barber_id IS NULL) AND date=? AND start<? AND end>?',barberId,day,end,start);}
@@ -75,7 +85,7 @@ export function createApp({databasePath=process.env.DATABASE_PATH||'./data/barbe
    return {...one('SELECT a.*,b.name barber_name FROM appointments a JOIN barbers b ON b.id=a.barber_id WHERE a.id=?',result),time:p.time};
   }catch(e){db.exec('ROLLBACK');throw e;}
  }
- app.post('/api/appointments',rateLimit({windowMs:60000,limit:10}),(req,res)=>res.status(201).json(reserve(req.body)));
+ app.post('/api/appointments',rateLimit({windowMs:60000,limit:10,standardHeaders:true,legacyHeaders:false,message:{error:'Muitas reservas em pouco tempo. Aguarde um minuto.'}}),(req,res)=>res.status(201).json(reserve(req.body)));
  app.get('/api/calendar',(req,res)=>{
   const q=z.object({service_id:id,barber_id:id,month:z.string().regex(/^\d{4}-(0[1-9]|1[0-2])$/)}).parse(req.query);
   const s=one('SELECT * FROM services WHERE id=? AND active=1',q.service_id);
@@ -109,6 +119,6 @@ export function createApp({databasePath=process.env.DATABASE_PATH||'./data/barbe
  app.delete('/api/admin/blocks/:id',(req,res)=>{run('DELETE FROM blocks WHERE id=?',id.parse(req.params.id));res.json({ok:true});});
  app.use('/api',(_req,res)=>res.status(404).json({error:'Rota não encontrada.'}));
  const dist=path.resolve('dist');if(existsSync(dist)){app.use(express.static(dist));app.get(['/', '/admin'],(_req,res)=>res.sendFile(path.join(dist,'index.html')));}
- app.use((err,_req,res,_next)=>{if(err instanceof z.ZodError)return res.status(400).json({error:'Dados inválidos. Confira os campos.',details:err.issues.map(i=>i.path.join('.'))});if(err.code==='ERR_SQLITE_ERROR')return res.status(400).json({error:'Não foi possível salvar. Confira os registros relacionados.'});res.status(err.status||500).json({error:err.status?err.message:'Erro interno. Tente novamente.'});});
+ app.use((err,_req,res,_next)=>{if(err.type==='entity.parse.failed')return res.status(400).json({error:'JSON invalido.'});if(err.type==='entity.too.large')return res.status(413).json({error:'Requisicao muito grande.'});if(err instanceof z.ZodError)return res.status(400).json({error:'Dados inválidos. Confira os campos.',details:err.issues.map(i=>i.path.join('.'))});if(err.code==='ERR_SQLITE_ERROR')return res.status(400).json({error:'Não foi possível salvar. Confira os registros relacionados.'});res.status(err.status||500).json({error:err.status?err.message:'Erro interno. Tente novamente.'});});
  return {app,db};
 }

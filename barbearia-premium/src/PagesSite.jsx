@@ -127,7 +127,7 @@ export default function PagesSite() {
           <h2>Venha nos visitar.</h2>
           <p>{shop.address}</p>
           <p>{shop.hours}</p>
-          <a className="button directions-button" href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(shop.address)}`} target="_blank" rel="noopener noreferrer">
+          <a className="button directions-button" href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(`${shop.address}, Brasil`)}`} target="_blank" rel="noopener noreferrer">
             Como chegar ↗
           </a>
           <a
@@ -154,7 +154,7 @@ export default function PagesSite() {
         <iframe
           title="Localização da barbearia"
           loading="lazy"
-          src={`https://maps.google.com/maps?q=${encodeURIComponent(shop.address)}&output=embed`}
+          src={`https://maps.google.com/maps?q=${encodeURIComponent(`${shop.address}, Brasil`)}&z=17&hl=pt-BR&output=embed`}
         />
       </section>
 

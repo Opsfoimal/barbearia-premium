@@ -5,7 +5,7 @@ import {createApp,today} from '../server/app.js';
 
 test('fluxo integrado, segurança, duração, concorrência, folgas e CRUD',async()=>{
  const adminPassword=randomBytes(18).toString('base64url');const {app,db}=createApp({databasePath:':memory:',adminPassword,adminEmail:'admin@barbearia.local'});const server=app.listen(0,'127.0.0.1');await new Promise(r=>server.once('listening',r));const base=`http://127.0.0.1:${server.address().port}/api`;let cookie='';
- async function call(route,body,method,authorized=false){const r=await fetch(base+route,{method:method||(body?'POST':'GET'),headers:{'Content-Type':'application/json',...(authorized?{cookie}:{})},body:body?JSON.stringify(body):undefined});return {status:r.status,data:await r.json(),headers:r.headers};}
+ async function call(route,body,method,authorized=false){const r=await fetch(base+route,{method:method||(body?'POST':'GET'),headers:{'Content-Type':'application/json','X-Requested-With':'DQBStudio',...(authorized?{cookie}:{})},body:body?JSON.stringify(body):undefined});return {status:r.status,data:await r.json(),headers:r.headers};}
  try{
  let d=new Date(today()+'T12:00:00Z');d.setUTCDate(d.getUTCDate()+2);while(d.getUTCDay()===0)d.setUTCDate(d.getUTCDate()+1);const day=d.toISOString().slice(0,10);
  const customer={service_id:3,barber_id:1,date:day,time:'09:00',name:'Cliente de Teste',phone:'11999999999',email:'teste@example.com'};

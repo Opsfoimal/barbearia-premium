@@ -1,6 +1,6 @@
 export async function api(url,body,method,signal){
  const base=(import.meta.env.VITE_API_URL||'').replace(/\/$/,'');
- const response=await fetch(base+'/api'+url,{credentials:'same-origin',method:method||(body?'POST':'GET'),signal,headers:body?{'Content-Type':'application/json'}:{},body:body?JSON.stringify(body):undefined});
+ const response=await fetch(base+'/api'+url,{credentials:'same-origin',cache:'no-store',method:method||(body?'POST':'GET'),signal,headers:{'X-Requested-With':'DQBStudio',...(body?{'Content-Type':'application/json'}:{})},body:body?JSON.stringify(body):undefined});
  if(!response.headers.get('content-type')?.includes('application/json')) throw new Error('A agenda online ainda não está conectada. Entre em contato com a barbearia.');
  const data=await response.json();
  if(!response.ok)throw Object.assign(new Error(data.error||'Não foi possível continuar.'),{status:response.status});
