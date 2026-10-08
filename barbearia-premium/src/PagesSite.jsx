@@ -119,9 +119,6 @@ export default function PagesSite() {
           <h2 id="instagram-heading">Inspiração para seu próximo corte.</h2>
           <p>Acompanhe nossos trabalhos e encontre o estilo que combina com você.</p>
         </div>
-        <a className="button instagram-button" href="https://www.instagram.com/vineebarber/" target="_blank" rel="noopener noreferrer">
-          <InstagramIcon /> Ver @vineebarber ↗
-        </a>
       </section>
 
       <section id="contact" className="location">
