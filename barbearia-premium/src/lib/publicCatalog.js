@@ -1,6 +1,6 @@
 import {initialServices} from './services';
 export const publicCatalog={
- shop:{name:"D'Quebrada Cortes",address:'Rua Dr. Luiz Losso Filho, 703, Curitiba - PR',hours:'Segunda a sábado, 09h às 19h',whatsapp:''},
+ shop:{name:"D'Quebrada Cortes",address:'Rua Dr. Luiz Losso Filho, 703, Curitiba - PR',hours:'Segunda a sábado, 09h às 19h',whatsapp:'554197717612'},
  services:initialServices.map((service,index)=>({id:index+1,...service})),
  barbers:[{id:1,name:'Rafael Costa',specialty:'Cortes clássicos e acabamento'},{id:2,name:'Lucas Almeida',specialty:'Degradê e barba'}]
 };
