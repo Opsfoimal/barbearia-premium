@@ -35,6 +35,132 @@ button:hover,.button:hover{background:#393b55;border-color:#a1a5c4;color:#fff}
 .location .button{margin:8px 10px 8px 0}.instagram-button{white-space:normal;gap:8px}nav{flex-wrap:wrap}nav a{display:inline-flex;align-items:center;gap:7px}.instagram-icon{width:18px;height:18px;flex-shrink:0;vertical-align:middle}
 .hero h1{font-family:'Anton',Impact,'Arial Black',sans-serif;font-size:clamp(44px,5vw,76px);font-weight:400;line-height:1.12;letter-spacing:.025em;text-transform:uppercase;text-wrap:balance}
 .hero h1 em{font-family:inherit;font-style:normal;font-weight:inherit;color:#fff}
-section h2{font-family:'Anton',Impact,'Arial Black',sans-serif;font-weight:400;font-style:normal;font-size:clamp(30px,3.2vw,46px);line-height:1.15;letter-spacing:.025em;text-transform:uppercase}
+h1,h2{font-family:'Anton',Impact,'Arial Black',sans-serif;font-weight:400;font-style:normal;letter-spacing:.025em;text-transform:uppercase}
+h1 em,h2 em{font-family:inherit;font-weight:inherit;font-style:normal}
+section h2{font-family:'Playfair Display',Georgia,serif;font-size:clamp(32px,3.2vw,46px);font-weight:400;font-style:normal;line-height:1.12;letter-spacing:normal;text-transform:none}
 @media(max-width:600px){.hero h1{font-size:clamp(36px,10vw,52px);letter-spacing:.015em}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+
+/* Public storefront: typography, spacing and responsive navigation. */
+.public-site .site-booking-content { padding: 24px 32px 32px; max-width: 680px; margin: auto; }
+.public-site .site-booking-content h2 { font-size: clamp(30px, 4vw, 42px); }
+.public-site .site-booking-content .field { font-size: 14px; }
+@media(max-width:600px) { .public-site .site-booking-content { padding: 20px; } }
+.public-site .booking-dialog { width: min(1000px, 94vw); max-height: 90dvh; padding: 0; border: 1px solid #62647e; border-radius: 18px; background: #1d1e31; color: #f3f3f8; }
+.public-site .booking-dialog::backdrop { background: #080916cc; backdrop-filter: blur(5px); }
+.public-site .booking-dialog .request-booking { padding: 32px; border: 0; }
+.public-site .booking-close { display: block; margin: 16px 16px 0 auto; min-height: 44px; }
+@media(max-width:600px) { .public-site .booking-dialog .request-booking { padding: 20px; } }
+.public-site .request-booking { display: grid; grid-template-columns: 1fr 1fr; gap: 7%; align-items: center; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: #1d1e31; }
+.public-site .request-booking .booking-panel { border-radius: 14px; }
+.public-site .request-booking .field { font-size: 14px; }
+.public-site .request-booking .booking-price { padding: 20px 0; border-top: 1px solid var(--line); }
+.public-site .request-booking .booking-disclaimer { font-size: 12px; margin-bottom: 0; }
+.public-site .services button.link { text-align: left; border-radius: 0; background: transparent; color: #f3f3f8; }
+@media(max-width:900px) { .public-site .request-booking { grid-template-columns: 1fr; gap: 24px; } }
+.public-site .whatsapp-floating { position: fixed; right: max(24px, env(safe-area-inset-right)); bottom: calc(24px + env(safe-area-inset-bottom)); z-index: 20; display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 54px; padding: 14px 20px; border: 1px solid #62647e; border-radius: 30px; background: #f0effa; color: #191a2b; font-size: 14px; font-weight: 700; box-shadow: 0 8px 30px #0005; }
+.public-site .whatsapp-floating:hover { background: #d7d5eb; color: #191a2b; }
+.public-site footer { padding-bottom: 110px !important; }
+@media(max-width:600px) { .public-site .whatsapp-floating { right: 16px; bottom: calc(16px + env(safe-area-inset-bottom)); min-height: 50px; padding: 12px 16px; font-size: 13px; } }
+.public-site {
+  --line: #38394e;
+  background: #191a2b;
+  color: #f3f3f8;
+}
+.public-site header {
+  padding: 20px max(5%, calc((100vw - 1320px) / 2));
+  background: #191a2b;
+}
+.public-site .brand img { border-radius: 12px; width: 56px; height: 56px; object-fit: cover; }
+.public-site .brand span { font-size: 14px; letter-spacing: 2.5px; }
+.public-site nav { gap: 26px; font-size: 14px; }
+.public-site nav a { min-height: 44px; border: 0; padding: 6px 0; }
+.public-site nav a:hover { color: #d0d0ee; }
+.public-site section { max-width: 1440px; padding: 88px 5%; }
+.public-site .hero {
+  min-height: 650px;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 7%;
+  background: radial-gradient(ellipse at 80% 45%, #292a40, transparent 70%);
+}
+.public-site h1, .public-site h2, .public-site .hero h1 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -.035em;
+  text-transform: none;
+  line-height: 1.1;
+}
+.public-site .hero h1 { font-size: clamp(46px, 5.2vw, 76px); }
+.public-site .hero h1 em { font-family: inherit; font-style: italic; color: #e0dff3; }
+.public-site h2 { font-size: clamp(34px, 3.4vw, 48px); max-width: 760px; margin-bottom: 38px; }
+.public-site .eyebrow { font-size: 11px; letter-spacing: 2.8px; color: #c8c6e2; margin-bottom: 24px; }
+.public-site p { font-size: 15px; line-height: 1.85; color: #bebfd1; }
+.public-site .hero p { max-width: 480px; margin: 26px 0 30px; }
+.public-site .hero-art.hero-logo { max-width: 480px; height: auto; border-radius: 24px; box-shadow: 0 24px 70px #10102066; }
+.public-site .hero-logo-image { display: block; }
+.public-site .button {
+  min-height: 52px;
+  padding: 16px 24px;
+  border-radius: 8px;
+  border: 1px solid #f0effa;
+  background: #f0effa;
+  color: #191a2b;
+  justify-content: center;
+  gap: 10px;
+  font-size: 14px;
+}
+.public-site .button:hover { background: #d7d5eb; border-color: #d7d5eb; color: #191a2b; }
+.public-site .hero-instagram { display: flex; align-items: center; gap: 9px; width: fit-content; font-size: 13px; min-height: 44px; margin-top: 14px; color: #d4d3e7; }
+.public-site .hero .opening-hours { font-size: 13px; margin: 14px 0 0; color: #aaaabd; }
+.public-site .studio-details { max-width: 1296px; margin: 0 auto; padding: 28px 32px; border: 1px solid var(--line); border-radius: 12px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; background: #202135; }
+.public-site .studio-details span { color: #b9bbcf; font-size: 13px; line-height: 1.7; }
+.public-site .studio-details strong { display: block; color: #f3f3f8; font-size: 14px; margin-bottom: 5px; }
+.public-site .services { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.public-site article { border-radius: 12px; background: #202135; border-color: var(--line); }
+.public-site .services article { padding: 28px; display: flex; flex-direction: column; }
+.public-site .service-number { color: #8b8da8; font-size: 11px; letter-spacing: 2px; }
+.public-site h3 { font-size: 21px; font-weight: 600; margin: 18px 0 10px; }
+.public-site .services article p { margin: 0; min-height: 56px; }
+.public-site .card-bottom { margin-top: auto; padding-top: 24px; gap: 12px; }
+.public-site .card-bottom strong { font-size: 26px; color: #f3f3f8; }
+.public-site small { font-size: 12px; }
+.public-site .services .link { border-top: 1px solid var(--line); margin-top: 22px; padding-top: 18px; min-height: 44px; font-size: 13px; font-weight: 600; }
+.public-site .team .portrait { border-radius: 8px; overflow: hidden; }
+.public-site .instagram-feature { margin: 0 auto 32px; display: flex; align-items: center; justify-content: space-between; gap: 40px; background: linear-gradient(120deg, #28293e, #1d1e31); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.public-site .instagram-feature h2 { max-width: 650px; margin-bottom: 18px; }
+.public-site .instagram-feature p { margin: 0; }
+.public-site .instagram-feature .button { flex-shrink: 0; }
+.public-site .location { align-items: center; }
+.public-site .location iframe { border-radius: 14px; border: 1px solid var(--line); height: 380px; }
+.public-site .location .instagram-button { background: transparent; border-color: #62647e; color: #f3f3f8; }
+.public-site footer { font-size: 13px; gap: 24px; padding: 28px 5%; }
+@media (max-width: 1100px) {
+  .public-site .studio-details { margin-left: 5%; margin-right: 5%; }
+  .public-site .services { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 900px) {
+  .public-site header { flex-wrap: wrap; gap: 12px; }
+  .public-site nav { gap: 22px; }
+  .public-site nav a:first-child, .public-site nav a:nth-child(2) { display: inline-flex; }
+  .public-site .hero { min-height: 0; gap: 32px; }
+  .public-site .studio-details { gap: 20px; padding: 24px; }
+  .public-site .instagram-feature { flex-direction: column; align-items: flex-start; gap: 24px; }
+}
+@media (max-width: 600px) {
+  .public-site header { padding: 18px 5% 10px; }
+  .public-site .brand span { font-size: 13px; letter-spacing: 2px; }
+  .public-site .brand img { width: 46px; height: 46px; }
+  .public-site nav { width: 100%; justify-content: space-between; gap: 8px; font-size: 12px; }
+  .public-site nav a { gap: 5px; }
+  .public-site section { padding: 56px 5%; }
+  .public-site .hero { grid-template-columns: 1fr; gap: 36px; }
+  .public-site .hero h1 { font-size: clamp(40px, 10vw, 58px); }
+  .public-site .hero-art.hero-logo { width: 85%; max-width: 350px; }
+  .public-site .studio-details { grid-template-columns: 1fr; gap: 18px; }
+  .public-site .studio-details span + span { border-top: 1px solid var(--line); padding-top: 18px; }
+  .public-site .services { grid-template-columns: 1fr; gap: 16px; }
+  .public-site .services article { padding: 24px; }
+  .public-site .services article p { min-height: 0; }
+  .public-site .card-bottom { flex-direction: row; align-items: center; flex-wrap: wrap; }
+  .public-site .location iframe { height: 300px; }
+}
