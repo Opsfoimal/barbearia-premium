@@ -45,6 +45,7 @@ function App() {
           <a href="/#services">Serviços</a>
           <a href="/#team">Equipe</a>
           <a href="/admin">Área administrativa</a>
+          <a href="https://www.instagram.com/vineebarber/" target="_blank" rel="noopener noreferrer">Instagram ↗</a>
         </nav>
 
         <a className="button small" href="/#booking">
