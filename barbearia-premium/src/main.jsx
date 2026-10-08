@@ -1,3 +1,4 @@
+import InstagramIcon from './components/InstagramIcon';
 import React, { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import Customer from './components/Customer';
@@ -45,7 +46,7 @@ function App() {
           <a href="/#services">Serviços</a>
           <a href="/#team">Equipe</a>
           <a href="/admin">Área administrativa</a>
-          <a href="https://www.instagram.com/vineebarber/" target="_blank" rel="noopener noreferrer">Instagram ↗</a>
+          <a href="https://www.instagram.com/vineebarber/" target="_blank" rel="noopener noreferrer"><InstagramIcon/> Instagram ↗</a>
         </nav>
 
         <a className="button small" href="/#booking">

@@ -32,8 +32,9 @@ button:hover,.button:hover{background:#393b55;border-color:#a1a5c4;color:#fff}
 .seal{border-color:#62647e}
 .hero-art.hero-logo{width:100%;max-width:480px;aspect-ratio:auto;justify-self:center;align-self:center;border:0;outline:0;border-radius:20px;background:transparent;overflow:hidden;box-shadow:0 0 64px rgba(47,48,74,.28)}
 .hero-logo-image{position:static;width:100%;height:auto;max-height:none;object-fit:contain}
-.location .button{margin:8px 10px 8px 0}.instagram-button{white-space:normal}nav{flex-wrap:wrap}
+.location .button{margin:8px 10px 8px 0}.instagram-button{white-space:normal;gap:8px}nav{flex-wrap:wrap}nav a{display:inline-flex;align-items:center;gap:7px}.instagram-icon{width:18px;height:18px;flex-shrink:0;vertical-align:middle}
 .hero h1{font-family:'Anton',Impact,'Arial Black',sans-serif;font-size:clamp(44px,5vw,76px);font-weight:400;line-height:1.12;letter-spacing:.025em;text-transform:uppercase;text-wrap:balance}
 .hero h1 em{font-family:inherit;font-style:normal;font-weight:inherit;color:#fff}
+section h2{font-family:'Anton',Impact,'Arial Black',sans-serif;font-weight:400;font-style:normal;font-size:clamp(30px,3.2vw,46px);line-height:1.15;letter-spacing:.025em;text-transform:uppercase}
 @media(max-width:600px){.hero h1{font-size:clamp(36px,10vw,52px);letter-spacing:.015em}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}

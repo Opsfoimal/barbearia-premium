@@ -1,3 +1,4 @@
+import InstagramIcon from './components/InstagramIcon';
 import React from 'react';
 import { publicCatalog } from './lib/publicCatalog.js';
 import './style.css';
@@ -28,7 +29,7 @@ export default function PagesSite() {
           <a href="#services">Serviços</a>
           <a href="#team">Equipe</a>
           <a href="#contact">Contato</a>
-          <a href="https://www.instagram.com/vineebarber/" target="_blank" rel="noopener noreferrer">Instagram ↗</a>
+          <a href="https://www.instagram.com/vineebarber/" target="_blank" rel="noopener noreferrer"><InstagramIcon/> Instagram ↗</a>
         </nav>
       </header>
 
@@ -134,7 +135,7 @@ export default function PagesSite() {
             Falar pelo WhatsApp ↗
           </a>
           <a className="button instagram-button" href="https://www.instagram.com/vineebarber/" target="_blank" rel="noopener noreferrer">
-            Instagram · @vineebarber ↗
+            <InstagramIcon/> Instagram · @vineebarber ↗
           </a>
           <p>
             Horários e agendamentos são confirmados pelo WhatsApp.
