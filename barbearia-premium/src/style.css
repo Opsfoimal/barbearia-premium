@@ -4,4 +4,30 @@
 @media(max-width:600px){header{padding:20px 5%;gap:10px}.brand{font-size:32px;gap:9px}.brand span{font-size:10px;letter-spacing:1px}.brand small{font-size:6px}nav{font-size:10px}.button.small{display:none}section,main{padding:45px 5%}.hero{grid-template-columns:1fr;min-height:0}.hero h1{font-size:56px}.hero-art{height:280px}.seal{font-size:62px;width:120px;height:120px}.hero-art>span{font-size:18px;margin-top:15px}.hero-note{flex-direction:column;gap:10px}.section-head{display:block}.services{gap:10px}.services article{padding:18px}.services h3{font-size:18px}.card-bottom{flex-direction:column;align-items:start;gap:7px}.card-bottom strong{font-size:21px}.team,.location{grid-template-columns:1fr}.booking-panel{padding:20px}.two{grid-template-columns:1fr}.steps{font-size:9px;gap:6px}.stats{grid-template-columns:1fr 1fr}.stats article{padding:20px}.manage{grid-template-columns:1fr}.admin h1{font-size:36px}footer{gap:20px;flex-direction:column}.location iframe{height:280px}.block-row{align-items:start;flex-direction:column}.editor{padding:20px}}
 .brand img{width:64px;height:64px}.calendar{border:1px solid var(--line);padding:16px;margin:20px 0;border-radius:8px}.calendar-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px;text-transform:capitalize}.calendar-head strong{font-size:14px}.calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}.calendar-grid button{min-height:44px;padding:8px 2px;position:relative;border-color:transparent;border-radius:6px}.calendar-grid button:disabled{opacity:.3}.calendar-grid i{position:absolute;bottom:4px;left:calc(50% - 2px);width:4px;height:4px;border-radius:50%;background:var(--gold)}.calendar-grid .selected i{background:#111}.weekday{text-align:center;font-size:10px;color:#aaa;padding-bottom:8px}.upcoming{grid-template-columns:repeat(3,1fr)}.upcoming-title{margin-top:48px}.stats strong{font-size:clamp(22px,2.7vw,32px);overflow-wrap:anywhere}.hero,.booking-panel{animation:appear .55s ease-out}article{transition:transform .2s,border-color .2s}article:hover{border-color:#726044}.services article:hover{transform:translateY(-4px)}@keyframes appear{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}@media(max-width:600px){.brand img{width:44px;height:44px}.calendar{padding:12px}.upcoming{grid-template-columns:1fr}.calendar-grid{gap:3px}.section-head>.button{margin-bottom:24px}.stats strong{font-size:23px}}
 .brand img{object-fit:contain;border-radius:8px}.hero-art.hero-logo{background:#171725;outline:none;height:auto;min-height:0;padding:0;overflow:hidden}.hero-logo-image{display:block;width:100%;height:auto;max-height:520px;object-fit:contain}.hero-logo>span,.hero-logo>small{display:none}
+/* Paleta azul noturno inspirada no fundo da logo DQB. */
+:root{background:#141422;color:#f3f3f8;--line:#35354d;--gold:#fff}
+body{background:radial-gradient(ellipse at top left,#292941 0,transparent 65%),#141422;min-height:100vh}
+header{background:#1b1b2e}
+.hero{background:radial-gradient(ellipse at 80% 50%,#30304b,transparent 65%)}
+article,.editor{background:#1e1e32}
+.booking{background:#19192b}
+.booking-panel{background:#141422}
+input,select{background:#25253b;border-color:#454560;color:#f3f3f8}
+button{border-color:#626078}
+p,.field,.hero-note,.stats article{color:#b9b9ca}
+small,.muted,.brand small,footer,.weekday{color:#aaaabd}
+.portrait{background:linear-gradient(145deg,#383850,#202035)}
+article:hover{border-color:var(--gold)}
+.hero-art.hero-logo{border-color:#454560;background:#171725}
+.stats strong{color:#fff}
+.toolbar>span{color:#f3f3f8;background:#25253b;border:1px solid #454560;border-radius:3px;padding:13px;min-height:44px;display:inline-flex;align-items:center;justify-content:center}
+/* Botões no mesmo azul da identidade visual. */
+button,.button{background:#292941;border:1px solid #606080;color:#f3f3f8}
+button:hover,.button:hover{background:#393956;border-color:#9292b2;color:#fff}
+.selected{background:#414163!important;border-color:#a1a1c5!important;color:#fff!important}
+.calendar-grid .selected i{background:#fff}
+.link{background:transparent;border:0;color:var(--gold)}
+.link:hover{background:transparent;color:#fff}
+.badge{background:#292941;color:#fff}
+.seal{border-color:#606080}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
