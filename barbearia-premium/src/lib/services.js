@@ -8,5 +8,6 @@ export const initialServices = [
   {name:'Corte + Progressiva',description:'Corte combinado com tratamento de progressiva.',price:60,duration:150},
   {name:'Progressiva',description:'Tratamento de progressiva capilar.',price:50,duration:120},
   {name:'Luzes',description:'Clareamento de mechas para renovar o visual.',price:70,duration:150},
-  {name:'Platinado',description:'Clareamento e tonalização para efeito platinado.',price:90,duration:180}
+  {name:'Platinado',description:'Clareamento e tonalização para efeito platinado.',price:90,duration:180},
+  {name:'Pigmentação',description:'Pigmentação para complementar seu visual.',price:25,duration:30}
 ];
