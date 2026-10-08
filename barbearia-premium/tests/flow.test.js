@@ -14,7 +14,7 @@ test('fluxo integrado, segurança, duração, concorrência, folgas e CRUD',asyn
  assert.equal((await call('/login',{email:'admin@barbearia.local',password:'errada'})).status,401);
  const login=await call('/login',{email:'admin@barbearia.local',password:adminPassword});assert.equal(login.status,200);cookie=login.headers.get('set-cookie').split(';')[0];assert.match(login.headers.get('set-cookie'),/HttpOnly/);
  const hash=db.prepare('SELECT hash FROM admins').get().hash;assert.notEqual(hash,adminPassword);assert.equal(hash.length,128);
- const results=await Promise.all([call('/appointments',customer),call('/appointments',customer)]);assert.deepEqual(results.map(r=>r.status).sort(),[201,409]);const reservation=results.find(r=>r.status===201).data;assert.equal(reservation.end-reservation.start,75);assert.equal(reservation.price,85);
+ const results=await Promise.all([call('/appointments',customer),call('/appointments',customer)]);assert.deepEqual(results.map(r=>r.status).sort(),[201,409]);const reservation=results.find(r=>r.status===201).data;assert.equal(reservation.end-reservation.start,75);assert.equal(reservation.price,60);
  assert.equal((await call('/appointments',{...customer,time:'10:00'})).status,409);
  assert.equal((await call('/appointments',{...customer,barber_id:2})).status,201);
  let availability=await call(`/availability?service_id=1&barber_id=1&date=${day}`);assert(!availability.data.slots.includes('10:00'));assert(availability.data.slots.includes('10:15'));
@@ -51,7 +51,7 @@ test('fluxo integrado, segurança, duração, concorrência, folgas e CRUD',asyn
  assert.equal((await call('/appointments',{...customer,date:sunday.toISOString().slice(0,10),time:'14:00'})).status,409);
  assert.equal((await call('/admin/services/1',{name:'Corte atualizado',description:'Teste',price:99,duration:60,active:1},'PUT',true)).status,200);
  const moved=await call('/admin/appointments/'+manual.data.id,{...customer,service_id:1,time:'14:00',phone:'11988887777'},'PUT',true);
- assert.equal(moved.status,200);assert.equal(moved.data.price,55);assert.equal(moved.data.end-moved.data.start,45);assert.equal(moved.data.service_name,'Corte');
+ assert.equal(moved.status,200);assert.equal(moved.data.price,40);assert.equal(moved.data.end-moved.data.start,45);assert.equal(moved.data.service_name,'Corte');
  const settings=await call('/admin/settings',{name:'Barbearia Teste',whatsapp:'5541999999999',address:'Rua de Teste, 100'},'PUT',true);
  assert.equal(settings.status,200);assert.equal((await call('/catalog')).data.shop.name,'Barbearia Teste');
  assert.equal((await call('/admin/settings',{name:'X'},'PUT',true)).status,400);

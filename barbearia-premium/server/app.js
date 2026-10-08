@@ -6,6 +6,7 @@ import {randomBytes,scryptSync,timingSafeEqual} from 'node:crypto';
 import {mkdirSync,existsSync} from 'node:fs';
 import path from 'node:path';
 import {z} from 'zod';
+import {initialServices} from '../src/lib/services.js';
 
 const statuses=['pendente','confirmado','cancelado','concluido'];
 const id=z.coerce.number().int().positive();
@@ -38,7 +39,7 @@ export function createApp({databasePath=process.env.DATABASE_PATH||'./data/barbe
  db.exec("INSERT OR IGNORE INTO customers(name,phone,email) SELECT name,phone,COALESCE(email,'') FROM appointments ORDER BY id; UPDATE appointments SET customer_id=(SELECT id FROM customers WHERE phone=appointments.phone) WHERE customer_id IS NULL;");
  for(const [key,value] of Object.entries({name:process.env.SHOP_NAME||"D'Quebrada Cortes",whatsapp:process.env.SHOP_WHATSAPP||'5511999999999',address:process.env.SHOP_ADDRESS||'Rua Dr. Luiz Losso Filho, 703, Curitiba - PR',hours:'Segunda a sábado, 09h às 19h'}))run('INSERT OR IGNORE INTO settings(key,value) VALUES(?,?)',key,value);
  const shop=()=>({...Object.fromEntries(all('SELECT key,value FROM settings').map(s=>[s.key,s.value])),today:today()});
- if(!one('SELECT id FROM services LIMIT 1')){for(const s of [['Corte','Tesoura e máquina, acabamento impecável.',55,45],['Barba','Ritual de barba com toalha quente.',40,30],['Corte + Barba','Experiência completa de cuidado.',85,75],['Sobrancelha','Detalhes que valorizam o seu olhar.',20,15]])run('INSERT INTO services(name,description,price,duration) VALUES(?,?,?,?)',...s);for(const b of [['Rafael Costa','Cortes clássicos e acabamento'],['Lucas Almeida','Degradê e barba']])run('INSERT INTO barbers(name,specialty,photo,rating) VALUES(?,?,?,?)',...b,'',4.9);}
+ if(!one('SELECT id FROM services LIMIT 1')){for(const s of initialServices)run('INSERT INTO services(name,description,price,duration) VALUES(?,?,?,?)',s.name,s.description,s.price,s.duration);for(const b of [['Rafael Costa','Cortes clássicos e acabamento'],['Lucas Almeida','Degradê e barba']])run('INSERT INTO barbers(name,specialty,photo,rating) VALUES(?,?,?,?)',...b,'',4.9);}
  const app=express();app.disable('x-powered-by');app.use(helmet({contentSecurityPolicy:{directives:{'img-src':["'self'",'https:','data:'],'frame-src':['https://maps.google.com','https://www.google.com']}}}));app.use(express.json({limit:'20kb'}));
  app.use('/api',rateLimit({windowMs:60000,limit:180,standardHeaders:true,legacyHeaders:false}));
  const allowedOrigins=req=>[`${req.protocol}://${req.headers.host}`,...(process.env.NODE_ENV!=='production'?['http://localhost:5173','http://127.0.0.1:5173']:[])];
