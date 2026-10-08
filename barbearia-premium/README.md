@@ -1,4 +1,4 @@
-﻿# D'Quebrada Cortes — agendamento
+﻿# DQB STUDIO — agendamento
 
 React, Node.js + Express e SQLite. Interface preta, branca e dourada, com estilos responsivos.
 

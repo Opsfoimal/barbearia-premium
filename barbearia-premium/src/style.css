@@ -30,4 +30,6 @@ button:hover,.button:hover{background:#393956;border-color:#9292b2;color:#fff}
 .link:hover{background:transparent;color:#fff}
 .badge{background:#292941;color:#fff}
 .seal{border-color:#606080}
+.hero-art.hero-logo{width:100%;max-width:520px;aspect-ratio:auto;justify-self:center;border:0;outline:0}
+.hero-logo-image{position:static;width:100%;height:auto;max-height:none;object-fit:contain}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}

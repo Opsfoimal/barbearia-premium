@@ -22,7 +22,7 @@ function App() {
   if (!catalog) {
     return (
       <main>
-        <h1>D’Quebrada Cortes</h1>
+        <h1>DQB STUDIO</h1>
         <p role="alert">
           {error || 'Preparando sua experiência…'}
         </p>
@@ -34,7 +34,7 @@ function App() {
     <>
       <header>
         <a className="brand" href="/">
-          <img src="/images/logo-dqb.jpeg" alt="" />
+          <img src="/images/DQB.Studio.png" alt="" />
           <span>
             {catalog.shop.name}
             <small>BARBEARIA · ESTILO & CUIDADO</small>
