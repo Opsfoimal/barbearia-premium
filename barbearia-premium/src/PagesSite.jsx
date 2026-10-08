@@ -19,7 +19,7 @@ export default function PagesSite() {
       <header>
         <a className="brand" href="#">
           <img
-            src={`${import.meta.env.BASE_URL}images/logo.svg`}
+            src={`${import.meta.env.BASE_URL}images/logo-dqb.jpeg`}
             alt="Logo da barbearia"
           />
           <span>{shop.name}</span>
@@ -54,8 +54,8 @@ export default function PagesSite() {
           <p>{shop.hours}</p>
         </div>
 
-        <div className="hero-art">
-          <div className="seal">DQ</div>
+        <div className="hero-art hero-logo">
+          <img src={`${import.meta.env.BASE_URL}images/logo-dqb.jpeg`} alt="Logo DQB Studio" className="hero-logo-image" />
           <span>{shop.name}</span>
           <small>BARBEARIA E CUIDADO MASCULINO</small>
         </div>

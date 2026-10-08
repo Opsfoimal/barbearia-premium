@@ -34,7 +34,7 @@ function App() {
     <>
       <header>
         <a className="brand" href="/">
-          <img src="/images/logo.svg" alt="" />
+          <img src="/images/logo-dqb.jpeg" alt="" />
           <span>
             {catalog.shop.name}
             <small>BARBEARIA · ESTILO & CUIDADO</small>
