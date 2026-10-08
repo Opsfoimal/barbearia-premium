@@ -5,7 +5,7 @@ import './style.css';
 import SiteBooking from './components/SiteBooking';
 
 export default function PagesSite() {
-  const { shop, services, barbers } = publicCatalog;
+  const { shop, services } = publicCatalog;
   const [serviceId, setServiceId] = useState(String(services[0].id));
   const bookingRef = useRef(null);
   const [bookingActive, setBookingActive] = useState(false);
@@ -37,7 +37,6 @@ export default function PagesSite() {
         </a>
         <nav>
           <a href="#services">Serviços</a>
-          <a href="#team">Equipe</a>
           <a href="#contact">Contato</a>
           <a href="https://www.instagram.com/vineebarber/" target="_blank" rel="noopener noreferrer"><InstagramIcon/> Instagram ↗</a>
         </nav>
@@ -112,36 +111,7 @@ export default function PagesSite() {
       <SiteBooking serviceName={selectedService.name} active={bookingActive} />
       </dialog>
 
-      <section id="team">
-        <div className="eyebrow">NOSSA EQUIPE</div>
-        <h2>Conheça os profissionais.</h2>
-        <div className="grid team">
-          {barbers.map((barber) => (
-            <article key={barber.id}>
-              <div className="portrait">
-                <img
-                  src={`${import.meta.env.BASE_URL}images/barber.svg`}
-                  alt={`Ilustração de ${barber.name}`}
-                />
-              </div>
-              <div>
-                <h3>{barber.name}</h3>
-                <p>{barber.specialty}</p>
-                <a
-                  className="link"
-                  href={whatsapp(
-                    `Olá! Gostaria de agendar com ${barber.name}.`
-                  )}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Agendar com este profissional ↗
-                </a>
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
+
 
       <section className="instagram-feature" aria-labelledby="instagram-heading">
         <div>
@@ -176,6 +146,9 @@ export default function PagesSite() {
           </a>
           <a className="button instagram-button" href="https://www.instagram.com/martins_lh041/" target="_blank" rel="noopener noreferrer">
             <InstagramIcon/> Instagram · @martins_lh041 ↗
+          </a>
+          <a className="button instagram-button" href="https://www.instagram.com/kr_barber777/" target="_blank" rel="noopener noreferrer">
+            <InstagramIcon/> Instagram · @kr_barber777 ↗
           </a>
           <p>
             Horários e agendamentos são confirmados pelo WhatsApp.
